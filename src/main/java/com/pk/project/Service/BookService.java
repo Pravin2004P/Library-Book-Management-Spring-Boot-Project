@@ -26,7 +26,12 @@ public class BookService {
     }
 
     public Book addBook(Book book) {
-        return bookRepository.save(book);
+        try {
+            return bookRepository.save(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save book: " + e.getMessage());
+        }
     }
 
     public boolean deleteBookById(int id) {
@@ -59,6 +64,11 @@ public class BookService {
     }
 
     public List<Book> addBooks(List<Book> books) {
-        return (List<Book>) bookRepository.saveAll(books);
+        try {
+            return (List<Book>) bookRepository.saveAll(books);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save books: " + e.getMessage());
+        }
     }
 }
