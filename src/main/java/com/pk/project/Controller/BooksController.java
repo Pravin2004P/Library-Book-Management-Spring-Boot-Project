@@ -1,4 +1,5 @@
 package com.pk.project.Controller;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,28 +14,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.pk.project.Entities.Book;
 import com.pk.project.Service.BookService;
+
 @RestController
 @RequestMapping("/api")
 
 public class BooksController {
 
-    
     @Autowired
     private BookService bookService;
 
     @GetMapping("/books")
     public ResponseEntity<List<Book>> getBooks() {
-       List <Book> books = this.bookService.getAllBooks();
-       if(books.isEmpty()) {
-           return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-       }
+        List<Book> books = this.bookService.getAllBooks();
+        if (books.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
         return ResponseEntity.ok(books);
     }
 
     @GetMapping("/books/{id}")
     public ResponseEntity<Book> getBook(@PathVariable("id") int id) {
         Book book = this.bookService.getBookById(id);
-        if(book == null) {
+        if (book == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(book);
@@ -48,6 +49,7 @@ public class BooksController {
         }
         return ResponseEntity.ok(updatedBook);
     }
+
     @PostMapping(value = "/books")
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
         Book savedBook = this.bookService.addBook(book);
@@ -67,15 +69,15 @@ public class BooksController {
         }
         return ResponseEntity.noContent().build();
     }
-    
-        @DeleteMapping("/books")
+
+    @DeleteMapping("/books")
     public ResponseEntity<Void> deleteAllBooks() {
-     if(   this.bookService.deleteAllBooks()==true) {
-        return ResponseEntity.ok().build();
-     } else {
+        if (this.bookService.deleteAllBooks() == true) {
+            return ResponseEntity.ok().build();
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-     }
-        
+        }
+
     }
-    
+
 }
