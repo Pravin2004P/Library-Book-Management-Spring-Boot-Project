@@ -10,24 +10,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.pk.project.Helper.FileUploadHelper;
 
-import java.util.logging.Logger;
-
 @RestController
 public class FileUploadController {
 
     @Autowired
     private FileUploadHelper fileUploadHelper;
 
-    private final Logger logger = Logger.getLogger(FileUploadController.class.getName());
-
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-        logger.info("Received file: " + file.getOriginalFilename());
-        logger.info("File type: " + file.getContentType());
-        logger.info("File size: " + file.getSize());
-
         if (file.isEmpty()) {
-            logger.warning("File is empty");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a file to upload");
         }
 
@@ -39,7 +30,6 @@ public class FileUploadController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong! Try again");
             }
         } catch (Exception e) {
-            logger.severe("Exception occurred: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong! Try again");
         }
